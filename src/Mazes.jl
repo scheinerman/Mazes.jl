@@ -7,8 +7,18 @@ _edge = Tuple{_vtx,_vtx}
 
 import SimpleDrawing: draw
 import Base: show
-export Maze
+export Maze, draw_ans, draw
 
+
+"""
+`M = Maze(r,c)` creates an `r`-by-`c` maze. To see the maze,
+use `draw(M)`. The maze is meant to be solved from the upper left
+to the lower right. This is indicated by stars at those locations.
+To draw the maze without those stars, use `draw(M,false)`.
+
+To draw the solution to the maze, use `draw_ans(M)`. The solutions is
+always drawn without stars.
+"""
 struct Maze
     r::Int  # number of rows
     c::Int  # number of cols
@@ -90,7 +100,7 @@ function _gen_tree(nr,nc)
 end
 
 
-function draw(M::Maze)
+function _puzzle_draw(M::Maze)
     # get the tree's embedding
     xy = M.T.cache[:GraphEmbedding].xy
 
@@ -130,10 +140,36 @@ function draw(M::Maze)
         end
 
     end
-    annotate!(1,-1,"*")
-    annotate!(M.c,-M.r,"*")
+end
+
+function draw(M::Maze, stars::Bool=true)
+    _puzzle_draw(M)
+    if stars
+        annotate!(1,-1,"*")
+        annotate!(M.c,-M.r,"*")
+    end
     finish()
 end
+
+function _ans_draw(M::Maze)
+    xy = M.T.cache[:GraphEmbedding].xy
+    P = find_path(M.T, (1,1), (M.r, M.c))
+    n = length(P)
+    for i=1:n-1
+        a = P[i]
+        xa,ya = xy[a]
+        b = P[i+1]
+        xb,yb = xy[b]
+        draw_segment(xa,ya,xb,yb,color=:red, style=:dot)
+    end
+end
+
+function draw_ans(M::Maze)
+    _puzzle_draw(M)
+    _ans_draw(M)
+    finish()
+end
+
 
 
 
