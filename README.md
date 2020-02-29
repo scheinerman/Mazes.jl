@@ -19,11 +19,11 @@ julia> draw(M)
 ```
 produces this:
 
-![](maze.png)
+![](./maze.png)
 
 To see the answer, we use `draw_ans(M)` and this is the result:
 
-![](ans.png)
+![](./ans.png)
 
 
 ### Printing
