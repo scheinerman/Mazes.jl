@@ -6,7 +6,7 @@ _edge = Tuple{_vtx,_vtx}
 
 
 import SimpleDrawing: draw
-import Base: show
+import Base: show, size
 export Maze, draw_ans, draw
 
 
@@ -29,11 +29,18 @@ struct Maze
     end
 end
 
+Maze(n::Int) = Maze(n,n)
 
 
 function show(io::IO, M::Maze)
   print(io, "Maze($(M.r),$(M.c))")
 end
+
+"""
+`size(M::Maze)` returns a tuple `(r,c)` where `r` is the number of
+rows and `c` is the number of columns in the maze.
+"""
+size(M::Maze) = (M.r,M.c)
 
 function _gen_tree(nr,nc)
     @assert nr>=2 && nc>=2 "Inputs must both be at least 2"
@@ -142,6 +149,11 @@ function _puzzle_draw(M::Maze)
     end
 end
 
+"""
+`draw(M::Maze)` draws the maze `M` on the screen. Stars mark the start
+(upper left) and end (lower right). To draw the maze without the stars
+use `draw(M,false)`.
+"""
 function draw(M::Maze, stars::Bool=true)
     _puzzle_draw(M)
     if stars
@@ -151,9 +163,14 @@ function draw(M::Maze, stars::Bool=true)
     finish()
 end
 
-function _ans_draw(M::Maze)
+function _ans_draw(M::Maze,s::_vtx,t::_vtx)
     xy = M.T.cache[:GraphEmbedding].xy
-    P = find_path(M.T, (1,1), (M.r, M.c))
+    @assert has(M.T,s) "$s not a square in this maze"
+    @assert has(M.T,t) "$t not a square in this maze"
+    if s==t
+        @warn "Two locations are the same, no path will be drawn"
+    end
+    P = find_path(M.T, s, t)
     n = length(P)
     for i=1:n-1
         a = P[i]
@@ -164,11 +181,21 @@ function _ans_draw(M::Maze)
     end
 end
 
-function draw_ans(M::Maze)
+"""
+`draw_ans(M::Maze)` draws the maze `M` and the solution (as a dotted red line)
+from the start (upper left) to the end (lower right).
+
+To draw a different path (solution) use `draw(M,s,t)` where `s` and `t` are
+integer 2-tuples. Note that squares in the maze are indexed like a matrix,
+so `(2,3)` refers to the cell in row 2, column 3.
+"""
+function draw_ans(M::Maze,s::_vtx,t::_vtx)
     _puzzle_draw(M)
-    _ans_draw(M)
+    _ans_draw(M,s,t)
     finish()
 end
+
+draw_ans(M::Maze) = draw_ans(M,(1,1),size(M))
 
 
 
