@@ -13,7 +13,7 @@ maze, use `draw_ans(M)`.
 julia> using Mazes
 
 julia> M = Maze(10,25)
-Maze(15, 25)
+Maze(15,25)
 
 julia> draw(M)
 ```

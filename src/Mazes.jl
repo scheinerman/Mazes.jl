@@ -32,7 +32,7 @@ end
 
 
 function show(io::IO, M::Maze)
-  print(io, "Maze($(M.r), $(M.c))")
+  print(io, "Maze($(M.r),$(M.c))")
 end
 
 function _gen_tree(nr,nc)
