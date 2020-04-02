@@ -7,7 +7,7 @@ _edge = Tuple{_vtx,_vtx}
 
 import SimpleDrawing: draw
 import Base: show, size
-export Maze, draw_ans, draw
+export Maze, draw_ans, draw, amaze
 
 
 """
@@ -197,6 +197,14 @@ end
 
 draw_ans(M::Maze) = draw_ans(M,(1,1),size(M))
 
+"""
+`amaze(r,c)` creates and draws a maze, and titles it with its size.
+"""
+function amaze(r::Int, c::Int)
+    M = Maze(r,c)
+    draw(M)
+    plot!(title="$r-by-$c")
+end
 
 
 

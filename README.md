@@ -26,6 +26,11 @@ To see the answer, we use `draw_ans(M)` and this is the result:
 ![](./ans.png)
 
 
+### Create and draw, all in one
+
+`amaze(r,c)` creates an `r`-by-`c` maze, draws it on the screen, and titles the
+drawing with the size of the maze.
+
 ### Printing
 
 Maze puzzles are easier to solve on paper. To save the maze as a document,
