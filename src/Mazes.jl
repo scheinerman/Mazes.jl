@@ -157,12 +157,12 @@ use `draw(M,false)`.
 function draw(M::Maze, stars::Bool=true)
     _puzzle_draw(M)
     if stars
-        #annotate!(1,-1,"*")
-        #annotate!(M.c,-M.r,"*")
+        annotate!((1,-1,"*"))
+        annotate!((M.c,-M.r,"*"))
 
-        r = 0.125
-        draw_circle(1,-1,r,color=:black)
-        draw_circle(M.c, -M.r, r, color=:black)
+        # r = 0.125
+        # draw_circle(1,-1,r,color=:black)
+        # draw_circle(M.c, -M.r, r, color=:black)
 
     end
     finish()
