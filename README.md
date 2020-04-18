@@ -5,7 +5,7 @@ This is a Julia module to create mazes. Begin with `using Mazes`.
 A new (random) maze is created with `Maze(r,c)` where `r` and `c` are integers that
 are at least two.
 
-To see the maze on the screen, use `draw(M)`. Then to see the solution to the
+To see the maze on the screen, use `draw(M)`. Then, to see the solution to the
 maze, use `draw_ans(M)`.
 
 ### Example
