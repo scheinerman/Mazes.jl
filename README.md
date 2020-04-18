@@ -21,15 +21,18 @@ produces a maze like this:
 
 ![](./maze.png)
 
-To see the answer, we use `draw_ans(M)` and this is the result:
+The full syntax for `draw` is
+```
+draw(M::Maze, markers::Bool=true, title::Bool=true)
+```
+where `markers` controls whether small circles are drawn in the upper left
+
+### Solution
+
+To see the answer, use `draw_ans(M)`:
 
 ![](./ans.png)
 
-
-### Create and draw, all in one
-
-`amaze(r,c)` creates an `r`-by-`c` maze, draws it on the screen, and titles the
-drawing with the size of the maze.
 
 ### Printing
 

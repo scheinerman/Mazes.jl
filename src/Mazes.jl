@@ -24,31 +24,31 @@ struct Maze
     c::Int  # number of cols
     T::SimpleGraph{_vtx}  # the tree for this maze
     function Maze(nr::Int, nc::Int)
-        G = _gen_tree(nr,nc)
-        new(nr,nc,G)
+        G = _gen_tree(nr, nc)
+        new(nr, nc, G)
     end
 end
 
-Maze(n::Int) = Maze(n,n)
+Maze(n::Int) = Maze(n, n)
 
 
 function show(io::IO, M::Maze)
-  print(io, "Maze($(M.r),$(M.c))")
+    print(io, "Maze($(M.r),$(M.c))")
 end
 
 """
 `size(M::Maze)` returns a tuple `(r,c)` where `r` is the number of
 rows and `c` is the number of columns in the maze.
 """
-size(M::Maze) = (M.r,M.c)
+size(M::Maze) = (M.r, M.c)
 
-function _gen_tree(nr,nc)
-    @assert nr>=2 && nc>=2 "Inputs must both be at least 2"
-    G = Grid(nr,nc)
+function _gen_tree(nr, nc)
+    @assert nr >= 2 && nc >= 2 "Inputs must both be at least 2"
+    G = Grid(nr, nc)
 
     EE = elist(G)  # all possible edges
     # assign random weights to edges
-    wt = Dict{_edge, Float64}()
+    wt = Dict{_edge,Float64}()
     for e in EE
         wt[e] = rand()
     end
@@ -56,8 +56,8 @@ function _gen_tree(nr,nc)
     # the upper left and lower right squares should be leaves
     # these weights should enforce that
 
-    e1 = ((1,1),(1,2))
-    e2 = ((1,1),(2,1))
+    e1 = ((1, 1), (1, 2))
+    e2 = ((1, 1), (2, 1))
     if rand() > 0.5
         wt[e1] = 0
         wt[e2] = 1
@@ -66,8 +66,8 @@ function _gen_tree(nr,nc)
         wt[e2] = 0
     end
 
-    e1 = (nr-1,nc),(nr,nc)
-    e2 = (nr,nc-1),(nr,nc)
+    e1 = (nr - 1, nc), (nr, nc)
+    e2 = (nr, nc - 1), (nr, nc)
     if rand() > 0.5
         wt[e1] = 0
         wt[e2] = 1
@@ -76,23 +76,23 @@ function _gen_tree(nr,nc)
         wt[e2] = 0
     end
 
-    wt_list = [ wt[e] for e in EE ]
+    wt_list = [wt[e] for e in EE]
     p = sortperm(wt_list)
-    E_list = [ EE[j] for j in p ] # EE sorted by weight
+    E_list = [EE[j] for j in p] # EE sorted by weight
 
     # copy vertices from G
     T = SimpleGraph{_vtx}()
     for v in G.V
-        add!(T,v)
+        add!(T, v)
     end
     P = Partition(G.V)
 
     for e in E_list
         a = e[1]
         b = e[2]
-        if !in_same_part(P,a,b)
-            add!(T,a,b)
-            merge_parts!(P,a,b)
+        if !in_same_part(P, a, b)
+            add!(T, a, b)
+            merge_parts!(P, a, b)
         end
     end
 
@@ -100,9 +100,9 @@ function _gen_tree(nr,nc)
     for v in T.V
         x = v[1]
         y = v[2]
-        d[v] = [y,-x]
+        d[v] = [y, -x]
     end
-    embed(T,d)
+    embed(T, d)
     return T
 end
 
@@ -115,74 +115,77 @@ function _puzzle_draw(M::Maze)
     # draw(M.T)  # DEBUG #
 
     # draw outside rectangle
-    ul = (0.5,-0.5)
-    ur = (M.c+0.5,-0.5)
-    ll = (0.5,-M.r-0.5)
-    lr = (M.c+0.5,-M.r-0.5)
+    ul = (0.5, -0.5)
+    ur = (M.c + 0.5, -0.5)
+    ll = (0.5, -M.r - 0.5)
+    lr = (M.c + 0.5, -M.r - 0.5)
 
-    draw_segment(ul...,ur..., color=:black)
-    draw_segment(ul...,ll..., color=:black)
-    draw_segment(ur...,lr..., color=:black)
-    draw_segment(ll...,lr..., color=:black)
+    draw_segment(ul..., ur..., color = :black)
+    draw_segment(ul..., ll..., color = :black)
+    draw_segment(ur..., lr..., color = :black)
+    draw_segment(ll..., lr..., color = :black)
 
-    G = Grid(M.r,M.c)
+    G = Grid(M.r, M.c)
 
-    non_edge_list = [ e for e in G.E if !has(M.T,e[1],e[2]) ]
+    non_edge_list = [e for e in G.E if !has(M.T, e[1], e[2])]
 
     for e in non_edge_list
         a = e[1]
         b = e[2]
-        mid = 0.5*(xy[a] + xy[b])
+        mid = 0.5 * (xy[a] + xy[b])
 
         if a[1] == b[1]  # vertical segment
             x = mid[1]
-            y1 = mid[2]-0.5
-            y2 = mid[2]+0.5
-            draw_segment(x,y1,x,y2,color=:black)
+            y1 = mid[2] - 0.5
+            y2 = mid[2] + 0.5
+            draw_segment(x, y1, x, y2, color = :black)
         else
-            x1 = mid[1]-0.5
-            x2 = mid[1]+0.5
+            x1 = mid[1] - 0.5
+            x2 = mid[1] + 0.5
             y = mid[2]
-            draw_segment(x1,y,x2,y,color=:black)
+            draw_segment(x1, y, x2, y, color = :black)
         end
 
     end
 end
 
 """
-`draw(M::Maze)` draws the maze `M` on the screen. Stars mark the start
-(upper left) and end (lower right). To draw the maze without the stars
-use `draw(M,false)`.
+`draw(M::Maze)` draws the maze `M` on the screen. Circles mark the start
+(upper left) and end (lower right). The size is printed above the maze.
+
+Full syntax: `draw(M::Maze, markers::Bool=true, title::Bool=true)`
 """
-function draw(M::Maze, stars::Bool=true)
+function draw(M::Maze, markers::Bool=true, title::Bool=true)
     _puzzle_draw(M)
-    if stars
-        annotate!((1,-1,"*"))
-        annotate!((M.c,-M.r,"*"))
 
-        # r = 0.125
-        # draw_circle(1,-1,r,color=:black)
-        # draw_circle(M.c, -M.r, r, color=:black)
-
+    if markers
+        r = 0.125
+        draw_circle(1, -1, r, color = :black)
+        draw_circle(M.c, -M.r, r, color = :black)
     end
+
+    if title
+        plot!(title = "$(M.r)-by-$(M.c)")
+    end
+
     finish()
 end
 
-function _ans_draw(M::Maze,s::_vtx,t::_vtx)
+function _ans_draw(M::Maze, s::_vtx, t::_vtx)
     xy = M.T.cache[:GraphEmbedding].xy
-    @assert has(M.T,s) "$s not a square in this maze"
-    @assert has(M.T,t) "$t not a square in this maze"
-    if s==t
+    @assert has(M.T, s) "$s not a square in this maze"
+    @assert has(M.T, t) "$t not a square in this maze"
+    if s == t
         @warn "Two locations are the same, no path will be drawn"
     end
     P = find_path(M.T, s, t)
     n = length(P)
-    for i=1:n-1
+    for i = 1:n-1
         a = P[i]
-        xa,ya = xy[a]
+        xa, ya = xy[a]
         b = P[i+1]
-        xb,yb = xy[b]
-        draw_segment(xa,ya,xb,yb,color=:red, style=:dot)
+        xb, yb = xy[b]
+        draw_segment(xa, ya, xb, yb, color = :red, style = :dot)
     end
 end
 
@@ -194,21 +197,20 @@ To draw a different path (solution) use `draw(M,s,t)` where `s` and `t` are
 integer 2-tuples. Note that squares in the maze are indexed like a matrix,
 so `(2,3)` refers to the cell in row 2, column 3.
 """
-function draw_ans(M::Maze,s::_vtx,t::_vtx)
+function draw_ans(M::Maze, s::_vtx, t::_vtx)
     _puzzle_draw(M)
-    _ans_draw(M,s,t)
+    _ans_draw(M, s, t)
     finish()
 end
 
-draw_ans(M::Maze) = draw_ans(M,(1,1),size(M))
+draw_ans(M::Maze) = draw_ans(M, (1, 1), size(M))
 
 """
-`amaze(r,c)` creates and draws a maze, and titles it with its size.
+`amaze(r,c)` creates and draws a maze.
 """
 function amaze(r::Int, c::Int)
-    M = Maze(r,c)
+    M = Maze(r, c)
     draw(M)
-    plot!(title="$r-by-$c")
 end
 
 
