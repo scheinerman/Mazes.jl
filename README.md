@@ -26,6 +26,7 @@ The full syntax for `draw` is
 draw(M::Maze, markers::Bool=true, title::Bool=true)
 ```
 where `markers` controls whether small circles are drawn in the upper left
+and lower right.
 
 ### Solution
 
