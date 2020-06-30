@@ -1,5 +1,5 @@
 name = "Mazes"
-uuid = "2e5c213e-ab15-5c8d-991f-abb7b09c23af
+uuid = "2e5c213e-ab15-5c8d-991f-abb7b09c23af"
 version = "0.1.0"
 
 [deps]
@@ -9,7 +9,7 @@ SimpleGraphs = "55797a34-41de-5266-9ec1-32ac4eb504d3"
 SimplePartitions = "ec83eff0-a5b5-5643-ae32-5cbf6eedec9d"
 
 [compat]
-julia = "≥ 1.0.0"
+julia = "1"
 Plots = "1"
 SimpleDrawing = "0"
 SimpleGraphs = "0"
