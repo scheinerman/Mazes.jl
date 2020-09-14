@@ -1,6 +1,6 @@
 name = "Mazes"
 uuid = "2e5c213e-ab15-5c8d-991f-abb7b09c23af"
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
