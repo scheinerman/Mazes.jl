@@ -1,5 +1,7 @@
 # Mazes
 
+[![Build Status](https://travis-ci.com/scheinerman/Mazes.jl.svg?branch=master)](https://travis-ci.com/scheinerman/Mazes.jl)
+
 This is a Julia module to create mazes. Begin with `using Mazes`.
 
 A new (random) maze is created with `Maze(r,c)` where `r` and `c` are integers that
