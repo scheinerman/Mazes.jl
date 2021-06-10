@@ -109,7 +109,7 @@ end
 
 function _puzzle_draw(M::Maze)
     # get the tree's embedding
-    xy = M.T.cache[:GraphEmbedding].xy
+    xy = M.T.cache[:xy]
 
     newdraw()
     # draw(M.T)  # DEBUG #
@@ -172,7 +172,7 @@ function draw(M::Maze, markers::Bool=true, title::Bool=true)
 end
 
 function _ans_draw(M::Maze, s::_vtx, t::_vtx)
-    xy = M.T.cache[:GraphEmbedding].xy
+    xy = M.T.cache[:xy]
     @assert has(M.T, s) "$s not a square in this maze"
     @assert has(M.T, t) "$t not a square in this maze"
     if s == t
