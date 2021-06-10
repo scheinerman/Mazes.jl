@@ -155,7 +155,7 @@ end
 
 Full syntax: `draw(M::Maze, markers::Bool=true, title::Bool=true)`
 """
-function draw(M::Maze, markers::Bool=true, title::Bool=true)
+function draw(M::Maze, markers::Bool = true, title::Bool = true)
     _puzzle_draw(M)
 
     if markers
