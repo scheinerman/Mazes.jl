@@ -22,7 +22,7 @@ always drawn without stars.
 struct Maze
     r::Int  # number of rows
     c::Int  # number of cols
-    T::SimpleGraph{_vtx}  # the tree for this maze
+    T::UG{_vtx}  # the tree for this maze
     function Maze(nr::Int, nc::Int)
         G = _gen_tree(nr, nc)
         new(nr, nc, G)
@@ -81,7 +81,7 @@ function _gen_tree(nr, nc)
     E_list = [EE[j] for j in p] # EE sorted by weight
 
     # copy vertices from G
-    T = SimpleGraph{_vtx}()
+    T = UG{_vtx}()
     for v in G.V
         add!(T, v)
     end
